@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Аспект для обработки аннотации {@link Idempotent}.
+ * Aspect for handling the {@link Idempotent} annotation.
  * 
- * <p>Перехватывает вызовы методов с аннотацией @Idempotent и проверяет,
- * не был ли запрос уже обработан.</p>
+ * <p>Intercepts method calls with the @Idempotent annotation and checks
+ * whether the request has already been processed.</p>
  * 
  * @author NiMv1
  * @since 1.0.0
@@ -43,12 +43,12 @@ public class IdempotencyAspect {
     }
 
     /**
-     * Обрабатывает методы с аннотацией @Idempotent.
+     * Handles methods with the @Idempotent annotation.
      * 
-     * @param joinPoint точка соединения
-     * @param idempotent аннотация идемпотентности
-     * @return результат выполнения метода
-     * @throws Throwable если метод выбросил исключение
+     * @param joinPoint join point
+     * @param idempotent idempotency annotation
+     * @return method execution result
+     * @throws Throwable if the method throws an exception
      */
     @Around("@annotation(idempotent)")
     public Object handleIdempotency(ProceedingJoinPoint joinPoint, Idempotent idempotent) throws Throwable {

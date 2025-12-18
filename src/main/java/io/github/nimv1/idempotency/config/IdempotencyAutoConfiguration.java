@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
- * Автоконфигурация для Spring Boot Starter Idempotency.
+ * Auto-configuration for Spring Boot Starter Idempotency.
  * 
- * <p>Автоматически настраивает все необходимые бины при наличии Redis.</p>
+ * <p>Automatically configures all required beans when Redis is available.</p>
  * 
  * @author NiMv1
  * @since 1.0.0

@@ -5,19 +5,21 @@
 [![Redis](https://img.shields.io/badge/Redis-Required-00FF00?style=for-the-badge&logo=redis&logoColor=black)](https://redis.io/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-> 🔒 **Spring Boot стартер для обеспечения идемпотентности запросов с использованием Redis**
+> 🔒 **Spring Boot starter for idempotent request handling with Redis support**
 
-## ✨ Возможности
+**English** | [Русский](docs/README_RU.md)
 
-- **Простая аннотация** `@Idempotent` для методов
-- **SpEL выражения** для генерации ключей
-- **Настраиваемый TTL** для каждого метода
-- **Автоматическое удаление ключа** при ошибке (retry-friendly)
-- **Полная интеграция** с Spring Boot 3.x
+## ✨ Features
 
-## 🚀 Быстрый старт
+- **Simple annotation** `@Idempotent` for methods
+- **SpEL expressions** for key generation
+- **Configurable TTL** per method
+- **Automatic key removal** on error (retry-friendly)
+- **Full integration** with Spring Boot 3.x
 
-### 1. Добавьте зависимость
+## 🚀 Quick Start
+
+### 1. Add dependency
 
 ```xml
 <dependency>
@@ -27,7 +29,7 @@
 </dependency>
 ```
 
-### 2. Настройте Redis
+### 2. Configure Redis
 
 ```yaml
 spring:
@@ -37,7 +39,7 @@ spring:
       port: 6379
 ```
 
-### 3. Используйте аннотацию
+### 3. Use the annotation
 
 ```java
 @RestController
@@ -47,53 +49,53 @@ public class PaymentController {
     @PostMapping
     @Idempotent(key = "#request.transactionId", ttl = 24, timeUnit = TimeUnit.HOURS)
     public PaymentResponse processPayment(@RequestBody PaymentRequest request) {
-        // Этот метод будет выполнен только один раз для каждого transactionId
+        // This method will be executed only once for each transactionId
         return paymentService.process(request);
     }
 }
 ```
 
-## 📖 Документация
+## 📖 Documentation
 
-### Аннотация @Idempotent
+### @Idempotent Annotation
 
-| Параметр | Тип | По умолчанию | Описание |
-|----------|-----|--------------|----------|
-| `key` | String | **required** | SpEL выражение для генерации ключа |
-| `ttl` | long | 1 | Время жизни ключа |
-| `timeUnit` | TimeUnit | HOURS | Единица измерения времени |
-| `prefix` | String | "idempotent:" | Префикс ключа в Redis |
-| `message` | String | "Duplicate request detected" | Сообщение об ошибке |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `key` | String | **required** | SpEL expression for key generation |
+| `ttl` | long | 1 | Key time-to-live |
+| `timeUnit` | TimeUnit | HOURS | Time unit for TTL |
+| `prefix` | String | "idempotent:" | Key prefix in Redis |
+| `message` | String | "Duplicate request detected" | Error message |
 
-### SpEL выражения
+### SpEL Expressions
 
 ```java
-// Параметр по имени
+// Parameter by name
 @Idempotent(key = "#transactionId")
 
-// Вложенное свойство
+// Nested property
 @Idempotent(key = "#request.orderId")
 
-// Комбинация параметров
+// Combined parameters
 @Idempotent(key = "#userId + ':' + #orderId")
 
-// Параметр по индексу
+// Parameter by index
 @Idempotent(key = "#p0.id")
 ```
 
-### Конфигурация
+### Configuration
 
 ```yaml
 idempotency:
-  enabled: true              # Включить/выключить (по умолчанию true)
-  default-ttl: 1             # TTL по умолчанию
-  default-time-unit: HOURS   # Единица времени по умолчанию
-  key-prefix: "idempotent:"  # Префикс ключей в Redis
+  enabled: true              # Enable/disable (default true)
+  default-ttl: 1             # Default TTL
+  default-time-unit: HOURS   # Default time unit
+  key-prefix: "idempotent:"  # Redis key prefix
 ```
 
-### Обработка ошибок
+### Error Handling
 
-При дублирующем запросе выбрасывается `IdempotencyException`:
+On duplicate request, `IdempotencyException` is thrown:
 
 ```java
 @ExceptionHandler(IdempotencyException.class)
@@ -104,7 +106,7 @@ public ResponseEntity<ErrorResponse> handleIdempotency(IdempotencyException ex) 
 }
 ```
 
-## 🔧 Как это работает
+## 🔧 How It Works
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌─────────────┐
@@ -125,9 +127,9 @@ public ResponseEntity<ErrorResponse> handleIdempotency(IdempotencyException ex) 
               └───────────┘  └───────────────┘
 ```
 
-## 📝 Примеры использования
+## 📝 Usage Examples
 
-### Платёжный сервис
+### Payment Service
 
 ```java
 @Service
@@ -135,13 +137,13 @@ public class PaymentService {
 
     @Idempotent(key = "#payment.transactionId", ttl = 24, timeUnit = TimeUnit.HOURS)
     public PaymentResult processPayment(Payment payment) {
-        // Безопасно от дублирования
+        // Safe from duplicate processing
         return gateway.charge(payment);
     }
 }
 ```
 
-### Отправка уведомлений
+### Notification Service
 
 ```java
 @Service
@@ -149,7 +151,7 @@ public class NotificationService {
 
     @Idempotent(key = "#userId + ':' + #eventType", ttl = 5, timeUnit = TimeUnit.MINUTES)
     public void sendNotification(String userId, String eventType, String message) {
-        // Один пользователь получит только одно уведомление за 5 минут
+        // User will receive only one notification per 5 minutes
         emailService.send(userId, message);
     }
 }

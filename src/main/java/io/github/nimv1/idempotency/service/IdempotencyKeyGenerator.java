@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * Генератор ключей идемпотентности на основе SpEL выражений.
+ * Idempotency key generator based on SpEL expressions.
  * 
  * @author NiMv1
  * @since 1.0.0
@@ -25,12 +25,12 @@ public class IdempotencyKeyGenerator {
     private final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
     /**
-     * Генерирует ключ идемпотентности на основе SpEL выражения.
+     * Generates an idempotency key based on a SpEL expression.
      * 
-     * @param joinPoint точка соединения AOP
-     * @param keyExpression SpEL выражение для ключа
-     * @param prefix префикс ключа
-     * @return сгенерированный ключ
+     * @param joinPoint AOP join point
+     * @param keyExpression SpEL expression for the key
+     * @param prefix key prefix
+     * @return generated key
      */
     public String generateKey(JoinPoint joinPoint, String keyExpression, String prefix) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

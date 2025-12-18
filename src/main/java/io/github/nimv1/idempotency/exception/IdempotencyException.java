@@ -1,7 +1,7 @@
 package io.github.nimv1.idempotency.exception;
 
 /**
- * Исключение, выбрасываемое при обнаружении дублирующего запроса.
+ * Exception thrown when a duplicate request is detected.
  * 
  * @author NiMv1
  * @since 1.0.0
@@ -16,9 +16,9 @@ public class IdempotencyException extends RuntimeException {
     }
 
     /**
-     * Возвращает ключ идемпотентности, вызвавший исключение.
+     * Returns the idempotency key that caused the exception.
      * 
-     * @return ключ идемпотентности
+     * @return idempotency key
      */
     public String getIdempotencyKey() {
         return idempotencyKey;

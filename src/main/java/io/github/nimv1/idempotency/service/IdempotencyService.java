@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Сервис для работы с идемпотентными ключами в Redis.
+ * Service for working with idempotency keys in Redis.
  * 
  * @author NiMv1
  * @since 1.0.0
@@ -21,22 +21,22 @@ public class IdempotencyService {
     }
 
     /**
-     * Проверяет, существует ли ключ идемпотентности.
+     * Checks if an idempotency key exists.
      * 
-     * @param key ключ для проверки
-     * @return true если ключ существует (дубликат), false если нет
+     * @param key key to check
+     * @return true if key exists (duplicate), false otherwise
      */
     public boolean exists(String key) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
     /**
-     * Сохраняет ключ идемпотентности с заданным TTL.
+     * Saves an idempotency key with the specified TTL.
      * 
-     * @param key ключ для сохранения
-     * @param ttl время жизни
-     * @param timeUnit единица измерения времени
-     * @return true если ключ успешно сохранён (не существовал), false если уже существует
+     * @param key key to save
+     * @param ttl time-to-live
+     * @param timeUnit time unit
+     * @return true if key was successfully saved (did not exist), false if already exists
      */
     public boolean setIfAbsent(String key, long ttl, TimeUnit timeUnit) {
         return Boolean.TRUE.equals(
@@ -45,9 +45,9 @@ public class IdempotencyService {
     }
 
     /**
-     * Удаляет ключ идемпотентности.
+     * Deletes an idempotency key.
      * 
-     * @param key ключ для удаления
+     * @param key key to delete
      */
     public void delete(String key) {
         redisTemplate.delete(key);

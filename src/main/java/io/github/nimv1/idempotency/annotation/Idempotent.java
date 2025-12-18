@@ -7,17 +7,17 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Аннотация для обеспечения идемпотентности запросов.
+ * Annotation to ensure request idempotency.
  * 
- * <p>Применяется к методам контроллера или сервиса для предотвращения
- * повторной обработки одинаковых запросов в течение заданного времени.</p>
+ * <p>Applied to controller or service methods to prevent
+ * duplicate processing of identical requests within a specified time period.</p>
  * 
- * <p><b>Пример использования:</b></p>
+ * <p><b>Usage example:</b></p>
  * <pre>{@code
  * @PostMapping("/payment")
  * @Idempotent(key = "#request.transactionId", ttl = 24, timeUnit = TimeUnit.HOURS)
  * public PaymentResponse processPayment(@RequestBody PaymentRequest request) {
- *     // Этот метод будет выполнен только один раз для каждого transactionId
+ *     // This method will be executed only once for each transactionId
  *     return paymentService.process(request);
  * }
  * }</pre>
@@ -30,44 +30,44 @@ import java.util.concurrent.TimeUnit;
 public @interface Idempotent {
 
     /**
-     * SpEL выражение для генерации ключа идемпотентности.
+     * SpEL expression for generating the idempotency key.
      * 
-     * <p>Поддерживаемые переменные:</p>
+     * <p>Supported variables:</p>
      * <ul>
-     *   <li>{@code #paramName} - параметр метода по имени</li>
-     *   <li>{@code #p0, #p1, ...} - параметры по индексу</li>
-     *   <li>{@code #root.methodName} - имя метода</li>
+     *   <li>{@code #paramName} - method parameter by name</li>
+     *   <li>{@code #p0, #p1, ...} - parameters by index</li>
+     *   <li>{@code #root.methodName} - method name</li>
      * </ul>
      * 
-     * @return SpEL выражение для ключа
+     * @return SpEL expression for the key
      */
     String key();
 
     /**
-     * Время жизни ключа идемпотентности.
+     * Time-to-live for the idempotency key.
      * 
-     * @return время жизни (по умолчанию 1)
+     * @return TTL value (default 1)
      */
     long ttl() default 1;
 
     /**
-     * Единица измерения времени жизни.
+     * Time unit for TTL.
      * 
-     * @return единица времени (по умолчанию HOURS)
+     * @return time unit (default HOURS)
      */
     TimeUnit timeUnit() default TimeUnit.HOURS;
 
     /**
-     * Префикс для ключа в Redis.
+     * Prefix for the key in Redis.
      * 
-     * @return префикс ключа (по умолчанию "idempotent:")
+     * @return key prefix (default "idempotent:")
      */
     String prefix() default "idempotent:";
 
     /**
-     * Сообщение об ошибке при дублирующем запросе.
+     * Error message for duplicate requests.
      * 
-     * @return сообщение об ошибке
+     * @return error message
      */
     String message() default "Duplicate request detected";
 }

@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Конфигурационные свойства для идемпотентности.
+ * Configuration properties for idempotency.
  * 
- * <p>Настраиваются через application.yml:</p>
+ * <p>Configured via application.yml:</p>
  * <pre>{@code
  * idempotency:
  *   enabled: true
@@ -23,22 +23,22 @@ import java.util.concurrent.TimeUnit;
 public class IdempotencyProperties {
 
     /**
-     * Включить/выключить проверку идемпотентности.
+     * Enable/disable idempotency checking.
      */
     private boolean enabled = true;
 
     /**
-     * Время жизни ключа по умолчанию.
+     * Default key TTL.
      */
     private long defaultTtl = 1;
 
     /**
-     * Единица измерения времени по умолчанию.
+     * Default time unit.
      */
     private TimeUnit defaultTimeUnit = TimeUnit.HOURS;
 
     /**
-     * Префикс для ключей в Redis.
+     * Prefix for keys in Redis.
      */
     private String keyPrefix = "idempotent:";
 
